@@ -6,5 +6,8 @@ MODEL_DIR = 'models'
 #---- Database Config----#
 
 TABLE_NAME = 'wiki'
-COLUMN_NAME = 'id'
+ID_COLUMN_NAME = 'id'
+RETRIEVED_DOCUMENT_TITLE_NAME = 'title'
+
+#---- Retrieved Config ----#
 

@@ -22,8 +22,10 @@ class GoldenRetriever(DefaultRetriever) :
         retrieved = DefaultRetrievedObject()
 
         for entity in entities : 
-            entity_document = self._fetch_entity(entity)
-            retrieved.add(json.loads(entity_document))
+            entity_documents = self._fetch_entity(entity)
+            for entity_document in entity_documents : 
+
+                retrieved.add(json.loads(entity_document[1]))
 
 
         return retrieved
