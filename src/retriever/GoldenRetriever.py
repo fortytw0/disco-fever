@@ -1,12 +1,13 @@
 import spacy
+import json
 
 from src.retriever.Retriever import DefaultRetrievedObject, DefaultRetriever
 
 class GoldenRetriever(DefaultRetriever) : 
 
-    def __init__(self, db_path: str, mode: str, model_name: str = None, **kwargs) -> None:
+    def __init__(self, db_path: str, **kwargs) -> None:
         
-        super().__init__(db_path, mode, model_name, **kwargs)
+        super().__init__(db_path, **kwargs)
         self.nlp = spacy.load('en_core_web_sm')
         
 
@@ -21,7 +22,9 @@ class GoldenRetriever(DefaultRetriever) :
         retrieved = DefaultRetrievedObject()
 
         for entity in entities : 
-            retrieved.add(self.db.get(entity))
+            entity_document = self._fetch_entity(entity)
+            retrieved.add(json.loads(entity_document))
+
 
         return retrieved
 

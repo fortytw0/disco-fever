@@ -42,15 +42,7 @@ class DefaultRetriever(object) :
         pass
 
     def retrieve(self, claim:str) -> DefaultRetrievedObject : 
-        entities = self._extract_entities(claim)
-        retrieved_collection = DefaultRetrievedObject()
-
-        for entity in entities : 
-            retrieved_document = self._fetch_entity(entity)
-            retrieved_collection.add(retrieved_document)
-
-        return retrieved_collection
-
+        pass
 
     def __sanity_check__(self, **kwargs) : 
         pass
