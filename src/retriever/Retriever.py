@@ -1,10 +1,13 @@
 import os
 import sqlite3
 
+class DefaultRetrievedObject(object) : 
+    pass
+
 
 class DefaultRetriever(object) :
 
-    def __init__(self, db_path:str, mode:str, model_name:str=None, table_name:str='wiki', entity_column:str='documents', **kwargs) -> None:
+    def __init__(self, db_path:str, mode:str, model_name:str=None, table_name:str='wiki', entity_column:str='id', **kwargs) -> None:
 
 
         self.db_path = db_path
@@ -24,9 +27,9 @@ class DefaultRetriever(object) :
     def get_cursor(self) -> sqlite3.Cursor : 
         return self.cursor
 
-    def fetch_entity(self, entity:str, limit:int=10) -> list :
+    def fetch_entity(self, entity:str) -> list :
         
-        command = "where {}={} limit {}".format(self.entity_column, limit)
+        command = "where {}={}".format(self.entity_column)
         self.fetch_command.format(command)
         self.cursor.execute()
         return self.cursor.fetchall()
