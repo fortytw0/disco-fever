@@ -1,0 +1,5 @@
+# IDE related commits
+*venv*
+*.DS_*
+*vscode*
+
