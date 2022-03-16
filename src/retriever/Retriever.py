@@ -29,7 +29,7 @@ class DefaultRetriever(object) :
 
     def fetch_entity(self, entity:str) -> list :
         
-        command = "where {}={}".format(self.entity_column)
+        command = "where {}={}".format(self.entity_column, entity)
         self.fetch_command.format(command)
         self.cursor.execute()
         return self.cursor.fetchall()
