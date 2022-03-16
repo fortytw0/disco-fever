@@ -1,40 +1,55 @@
 import os
 import sqlite3
+import spacy
+
+from src.utils.db_utils import DB
 
 class DefaultRetrievedObject(object) : 
-    pass
+    
+    def __init__(self, contents:list=[]) -> None:
+        
+        self.contents = contents
+        self.entity_column = 'id'
+
+    def __str__(self) : 
+
+        for content in self.contents : 
+            print(content[self.entity_column])
+
+    def add(self, document:dict) -> None : 
+        self.contents.append(document)
+
+    def process(self) -> None : 
+        pass
 
 
 class DefaultRetriever(object) :
 
-    def __init__(self, db_path:str, mode:str, model_name:str=None, table_name:str='wiki', entity_column:str='id', **kwargs) -> None:
+    def __init__(self, db_path:str, **kwargs) -> None:
 
 
-        self.db_path = db_path
-        self.mode = mode
-        self.model_name = model_name
-        self.model_dir = 'models/retriever/'
-        self.model_path = os.path.join(self.model_dir, self.model_name)
-        self.table_name = table_name
-        self.entity_column = entity_column
+        self.db = DB(db_path)
+        self.entity_column = 'id'
 
         self.__sanity_check__()
 
-        self.db_connection = sqlite3.connect(self.db_path)
-        self.cursor = self.db_connection.cursor()
-        self.fetch_command = "select * from {} {{}}".format(table_name)
-
-    def get_cursor(self) -> sqlite3.Cursor : 
-        return self.cursor
-
-    def fetch_entity(self, entity:str) -> list :
-        
-        command = "where {}={}".format(self.entity_column, entity)
-        self.fetch_command.format(command)
-        self.cursor.execute()
-        return self.cursor.fetchall()
+    
+    def _extract_entities(self, claim:str) -> list : 
+        pass  
 
 
+    def _fetch_entity(self, entity_name:str) -> list :
+        pass
+
+    def retrieve(self, claim:str) -> DefaultRetrievedObject : 
+        entities = self._extract_entities(claim)
+        retrieved_collection = DefaultRetrievedObject()
+
+        for entity in entities : 
+            retrieved_document = self._fetch_entity(entity)
+            retrieved_collection.add(retrieved_document)
+
+        return retrieved_collection
 
 
     def __sanity_check__(self, **kwargs) : 

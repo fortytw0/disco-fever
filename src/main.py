@@ -1,8 +1,8 @@
-from src.retriever.Retriever import DefaultRetriever
+from src.retriever.GoldenRetriever import GoldenRetriever
 
 
-default_retriever = DefaultRetriever(db_path='data/feverous_wikiv1.db', mode='train', model_name='default')
-fetched_entites = default_retriever.fetch_entity("Finding Nemo")
+golden_retriever = GoldenRetriever(db_path='data/feverous_wikiv1.db', mode='train', model_name='default')
+fetched_entites = golden_retriever.retrieve('J. K. Rowling wrote Harry Potter')
 
 print(fetched_entites)
 print(type(fetched_entites))
