@@ -1,5 +1,9 @@
-# IDE related commits
+# IDE related unwanted files
 *venv*
 *.DS_*
 *vscode*
+*pyc*
+
+
+
 
