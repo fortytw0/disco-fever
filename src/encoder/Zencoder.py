@@ -1,10 +1,9 @@
-from torch import cosine_similarity
 from src.retriever.Retriever import DefaultRetrievedObject
 from src.encoder.Encoder import DefaultEncoder, DefaultEncodedObject
 from transformers import TFBertModel, BertTokenizer
 
 import numpy as np
-from scipy import distance
+from scipy.spatial import distance
 
 class Zencoder(DefaultEncoder) :
 
@@ -16,10 +15,15 @@ class Zencoder(DefaultEncoder) :
 
     
     def _get_bert_repr(self, sentences:list) : 
+        
+        repr = []
 
-        tokenized = self.tokenizer(sentences, return_tensors='tf', padding=True)
-        output = self.bert(tokenized)
-        return output.last_hidden_state[:, 0, : ].numpy()
+        for sentence in sentences : 
+            tokenized = self.tokenizer(sentences, return_tensors='tf', padding=True)
+            output = self.bert(tokenized)
+            repr.append(output.last_hidden_state[:, 0, : ].numpy())
+
+        return repr
 
     def _calculate_cosine_similarity(self, claim_repr:np.array, sentences_repr:np.array) -> np.array : 
 

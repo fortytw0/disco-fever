@@ -17,8 +17,9 @@ class GoldenRO(DefaultRetrievedObject) :
         info = []
         for document in self.contents : 
             for sentence_order  in document[RETRIEVED_DOCUMENT_ORDER_COLUMN] : 
-                sentences.append(document[sentence_order])
-                info.append((document[RETRIEVED_DOCUMENT_TITLE_COLUMN], sentence_order))
+                if 'sentence' in sentence_order : 
+                    sentences.append(document[sentence_order])
+                    info.append((document[RETRIEVED_DOCUMENT_TITLE_COLUMN], sentence_order))
 
         return (sentences, info)
 
