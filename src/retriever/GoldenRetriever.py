@@ -1,7 +1,27 @@
+from typing import Tuple
 import spacy
 import json
 
 from src.retriever.Retriever import DefaultRetrievedObject, DefaultRetriever
+from src.utils.config import RETRIEVED_DOCUMENT_ORDER_COLUMN, RETRIEVED_DOCUMENT_TITLE_COLUMN
+
+
+class GoldenRO(DefaultRetrievedObject) : 
+
+    def __init__(self, contents: list = []) -> None:
+        super().__init__(contents)
+
+    def extract(self) -> tuple:
+        
+        sentences = []
+        info = []
+        for document in self.contents : 
+            for sentence_order  in document[RETRIEVED_DOCUMENT_ORDER_COLUMN] : 
+                sentences.append(document[sentence_order])
+                info.append((document[RETRIEVED_DOCUMENT_TITLE_COLUMN], sentence_order))
+
+        return (sentences, info)
+
 
 class GoldenRetriever(DefaultRetriever) : 
 
@@ -19,7 +39,7 @@ class GoldenRetriever(DefaultRetriever) :
 
     def retrieve(self, claim: str) -> DefaultRetrievedObject:
         entities = [entity.text for entity in self._extract_entities(claim)]
-        retrieved = DefaultRetrievedObject()
+        retrieved = GoldenRO()
 
         for entity in entities : 
             entity_documents = self._fetch_entity(entity)

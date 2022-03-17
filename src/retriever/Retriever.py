@@ -3,14 +3,14 @@ import sqlite3
 import spacy
 
 from src.utils.db_utils import DB
-from src.utils.config import ID_COLUMN_NAME, RETRIEVED_DOCUMENT_TITLE_NAME
+from src.utils.config import ID_COLUMN, RETRIEVED_DOCUMENT_TITLE
 
 class DefaultRetrievedObject(object) : 
     
     def __init__(self, contents:list=[]) -> None:
         
         self.contents = contents
-        self.entity_column = RETRIEVED_DOCUMENT_TITLE_NAME
+        self.entity_column = RETRIEVED_DOCUMENT_TITLE
 
     def __str__(self) : 
         return '\t'.join([content[self.entity_column] for content in self.contents])
@@ -21,6 +21,10 @@ class DefaultRetrievedObject(object) :
     def process(self) -> None : 
         pass
 
+    def extract(self) -> None : 
+        pass
+
+
 
 class DefaultRetriever(object) :
 
@@ -28,7 +32,7 @@ class DefaultRetriever(object) :
 
 
         self.db = DB(db_path)
-        self.entity_column = ID_COLUMN_NAME
+        self.entity_column = ID_COLUMN
 
         self.__sanity_check__()
 
