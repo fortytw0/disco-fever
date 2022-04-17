@@ -119,7 +119,7 @@ while counter < num_samples :
 
         # Save counter, so in case the program restarts - last state can be recovered
         with open('configs/bert_repr_counter.txt', 'w') as f : 
-            counter = f.write(str(counter))
+            f.write(str(counter))
         
 
         # Batch has been processed, reset batch lists. 
@@ -128,7 +128,7 @@ while counter < num_samples :
         batch_of_labels = []
         batch_of_ids = []
 
-        print('Finished saving : {}/{} batches.'.format(counter/batch_size , int(num_samples/batch_size)))
+        print('Finished saving : {}/{} batches.'.format(int(counter/batch_size) , int(num_samples/batch_size)))
 
     # Every nth iteration, log the status of the program. 
     if counter % log_frequency == 0 : 
