@@ -111,12 +111,16 @@ while counter < num_samples :
         np.save(dest_path, batch_repr)
 
 
-        # Log where each sample is stored, so that it can be retrieved (for QC)
+        # Save where each sample is stored, so that it can be retrieved (for QC)
         for id, label in zip(batch_of_ids, batch_of_labels) : 
             repr_info += '{},{},{}\n'.format(id, label, counter)
-        print(repr_info)
         with open('data/repr_info.csv', 'a+') as f : 
             f.write(repr_info)
+
+        # Save counter, so in case the program restarts - last state can be recovered
+        with open('configs/bert_repr_counter.txt', 'w') as f : 
+            counter = f.write(str(counter))
+        
 
         # Batch has been processed, reset batch lists. 
         batch_of_single_sentence_answers = []
