@@ -19,11 +19,12 @@ class Zencoder(DefaultEncoder) :
         repr = []
 
         for sentence in sentences : 
-            tokenized = self.tokenizer(sentences, return_tensors='tf', padding=True)
+            print('...')
+            tokenized = self.tokenizer(sentences, return_tensors='tf')
             output = self.bert(tokenized)
             repr.append(output.last_hidden_state[:, 0, : ].numpy())
 
-        return repr
+        return np.array(repr)
 
     def _calculate_cosine_similarity(self, claim_repr:np.array, sentences_repr:np.array) -> np.array : 
 
@@ -46,7 +47,7 @@ class Zencoder(DefaultEncoder) :
 
         most_similar_indices = np.argsort(cosine_similarities)
 
-        for i in most_similar_indices : 
+        for i in most_similar_indices[-10:] : 
 
             print('\n')
             print(sentences[i])
