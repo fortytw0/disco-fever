@@ -6,6 +6,7 @@
 #SBATCH --partition=sgpu
 #SBATCH --mail-type=ALL
 #SBATCH --mail-user=dasr8731@colorado.edu
+#SBATCH --output=bert-repr-job.%j.out
 
 
 module purge
