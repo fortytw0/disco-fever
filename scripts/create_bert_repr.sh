@@ -14,8 +14,9 @@ module load anaconda
 module load cuda
 module load cudnn
 
-
 nvidia-smi
+
+export TRANSFORMERS_CACHE=/projects/dasr8731/transformers-cache/
 
 cd /scratch/summit/dasr8731/disco-fever
 
