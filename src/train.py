@@ -19,7 +19,8 @@ train_data = train_config['train_data']
 epochs  = train_config['epochs']
 
 data_dir = 'data/repr/'
-train_files = glob.glob(os.path.join(data_dir, '*.npy'))
+train_files = glob.glob(os.path.join(data_dir, '*.npy'))[:-2]
+val_files = glob.glob(os.path.join(data_dir, '*.npy'))[-2:]
 num_train_files = len(train_files)
 
 # Load Model
@@ -44,19 +45,25 @@ else :
 
 # Data Generator
 
-def data_generator() : 
+def data_generator(split='train') : 
+
+    if split=='train' : 
+        files = train_files
+    else : 
+        files = val_files
     
     while True : 
 
-        for train_file in train_files : 
+        for f in files : 
 
-            data = np.load(train_file, allow_pickle=True)[()]
+            data = np.load(f, allow_pickle=True)[()]
             X = data[train_data]
             Y = data['label']
             yield X, Y
 
 
-train_data_gen = data_generator()
+train_data_gen = data_generator(split='train')
+val_data_gen = data_generator(split='val')
 
 # Defining Callbacks
 
@@ -68,11 +75,21 @@ csv_logger = callbacks.CSVLogger(os.path.join(model_dir, train_data+'.csv'), sep
 
 # Training Model 
 
-from tensorflow.keras import optimizers, losses
+from tensorflow.keras import optimizers, losses, metrics
 
-model.compile(optimizer = optimizers.Adam(), loss = losses.BinaryCrossentropy())
+model.compile(optimizer = optimizers.Adam(), 
+            loss = losses.BinaryCrossentropy(),
+            metrics = [metrics.Accuracy(), 
+                        metrics.AUC(), 
+                        metrics.TruePositives(),
+                        metrics.TrueNegatives(),
+                        metrics.FalsePositives(),
+                        metrics.FalseNegatives()
+                        ]
+            )
 
 model.fit(x=train_data_gen, 
+        validation_data=val_data_gen,
         epochs=epochs, 
         callbacks=[model_ckpt, csv_logger], 
         steps_per_epoch=num_train_files
