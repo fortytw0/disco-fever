@@ -73,7 +73,7 @@ from tensorflow.keras import callbacks
 
 model_ckpt = callbacks.ModelCheckpoint(os.path.join(model_dir, train_data))
 csv_logger = callbacks.CSVLogger(os.path.join(model_dir, train_data+'.csv'), separator=',', append=False)
-
+early_stopping = callbacks.EarlyStopping(monitor='val_loss', patience=3)
 
 # Training Model 
 
@@ -93,7 +93,7 @@ model.compile(optimizer = optimizers.Adam(),
 model.fit(x=train_data_gen, 
         validation_data=val_data_gen,
         epochs=epochs, 
-        callbacks=[model_ckpt, csv_logger], 
+        callbacks=[model_ckpt, csv_logger. early_stopping], 
         steps_per_epoch=num_train_files,
         validation_steps=num_val_files,
         )
