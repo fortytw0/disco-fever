@@ -93,7 +93,7 @@ model.compile(optimizer = optimizers.Adam(),
 model.fit(x=train_data_gen, 
         validation_data=val_data_gen,
         epochs=epochs, 
-        callbacks=[model_ckpt, csv_logger. early_stopping], 
+        callbacks=[model_ckpt, csv_logger, early_stopping], 
         steps_per_epoch=num_train_files,
         validation_steps=num_val_files,
         )
