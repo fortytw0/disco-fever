@@ -21,7 +21,9 @@ epochs  = train_config['epochs']
 data_dir = 'data/repr/'
 train_files = glob.glob(os.path.join(data_dir, '*.npy'))[:-2]
 val_files = glob.glob(os.path.join(data_dir, '*.npy'))[-2:]
+
 num_train_files = len(train_files)
+num_val_files = len(val_files)
 
 # Load Model
 
@@ -92,7 +94,8 @@ model.fit(x=train_data_gen,
         validation_data=val_data_gen,
         epochs=epochs, 
         callbacks=[model_ckpt, csv_logger], 
-        steps_per_epoch=num_train_files
+        steps_per_epoch=num_train_files,
+        validation_steps=num_val_files,
         )
 
 
