@@ -71,15 +71,15 @@ val_data_gen = data_generator(split='val')
 
 from tensorflow.keras import callbacks
 
-model_ckpt = callbacks.ModelCheckpoint(os.path.join(model_dir, train_data))
+model_ckpt = callbacks.ModelCheckpoint(os.path.join(model_dir, train_data), save_best_only=True,)
 csv_logger = callbacks.CSVLogger(os.path.join(model_dir, train_data+'.csv'), separator=',', append=False)
-early_stopping = callbacks.EarlyStopping(monitor='val_loss', patience=10, restore_best_weights=True)
+# early_stopping = callbacks.EarlyStopping(monitor='val_loss', patience=10, restore_best_weights=True)
 
 # Training Model 
 
 from tensorflow.keras import optimizers, losses, metrics
 
-model.compile(optimizer = optimizers.Adam(), 
+model.compile(optimizer = optimizers.Adam(learning_rate=0.00001), 
             loss = losses.BinaryCrossentropy(),
             metrics = [metrics.Accuracy(), 
                         metrics.AUC(), 
@@ -93,7 +93,7 @@ model.compile(optimizer = optimizers.Adam(),
 model.fit(x=train_data_gen, 
         validation_data=val_data_gen,
         epochs=epochs, 
-        callbacks=[model_ckpt, csv_logger, early_stopping], 
+        callbacks=[model_ckpt, csv_logger], 
         steps_per_epoch=num_train_files,
         validation_steps=num_val_files,
         )
