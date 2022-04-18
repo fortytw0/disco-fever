@@ -73,7 +73,7 @@ from tensorflow.keras import callbacks
 
 model_ckpt = callbacks.ModelCheckpoint(os.path.join(model_dir, train_data))
 csv_logger = callbacks.CSVLogger(os.path.join(model_dir, train_data+'.csv'), separator=',', append=False)
-early_stopping = callbacks.EarlyStopping(monitor='val_loss', patience=3)
+early_stopping = callbacks.EarlyStopping(monitor='val_loss', patience=10, restore_best_weights=True)
 
 # Training Model 
 
