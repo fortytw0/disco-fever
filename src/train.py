@@ -52,8 +52,7 @@ def data_generator() :
 
             data = np.load(train_file, allow_pickle=True)[()]
             X = data[train_data]
-            Y = data['label'].reshape(64, 1)
-
+            Y = data['label']
             yield X, Y
 
 
@@ -76,7 +75,7 @@ model.compile(optimizer = optimizers.Adam(), loss = losses.BinaryCrossentropy())
 model.fit(x=train_data_gen, 
         epochs=epochs, 
         callbacks=[model_ckpt, csv_logger], 
-        steps_per_epoch=int(num_train_files/64)
+        steps_per_epoch=num_train_files
         )
 
 
