@@ -1,0 +1,1 @@
+{"build_model": false, "model_dir": "models", "train_data": "evidence_repr", "epochs": 100}
