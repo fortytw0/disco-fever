@@ -59,10 +59,6 @@ def data_generator() :
 
 train_data_gen = data_generator()
 
-X , Y  = next(train_data_gen)
-print(X.shape)
-print(Y.shape)
-
 # Defining Callbacks
 
 from tensorflow.keras import callbacks
@@ -75,13 +71,9 @@ csv_logger = callbacks.CSVLogger(os.path.join(model_dir, train_data+'.csv'), sep
 
 from tensorflow.keras import optimizers, losses
 
-
 model.compile(optimizer = optimizers.Adam(), loss = losses.BinaryCrossentropy())
 
-print(Y)
-
-model.fit(x=X, 
-        y=Y,
+model.fit(x=train_data_gen, 
         epochs=epochs, 
         callbacks=[model_ckpt, csv_logger], 
         steps_per_epoch=int(num_train_files/64)
